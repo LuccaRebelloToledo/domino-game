@@ -5,7 +5,7 @@ public class List {
     private Node last;
 
     public Node getFirst() {
-        return first;
+        return this.first;
     }
 
     public void setFirst(Node first) {
@@ -13,7 +13,7 @@ public class List {
     }
 
     public Node getLast() {
-        return last;
+        return this.last;
     }
 
     public void setLast(Node last) {
