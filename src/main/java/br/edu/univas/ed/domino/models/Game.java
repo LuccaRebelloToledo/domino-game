@@ -1,20 +1,30 @@
 package br.edu.univas.ed.domino.models;
 
 public class Game {
-    private List players;
+    private Player human;
+    private Player computer;
     private Table table;
 
-    public Game(List players, Table table) {
-        this.players = players;
-        this.table = table;
+    public Game(Player human, Player computer, Table table) {
+        this.setHuman(human);
+        this.setComputer(computer);
+        this.setTable(table);
     }
 
-    public List getPlayers() {
-        return this.players;
+    public Player getHuman() {
+        return this.human;
     }
 
-    public void setPlayers(List players) {
-        this.players = players;
+    public void setHuman(Player human) {
+        this.human = human;
+    }
+
+    public Player getComputer() {
+        return this.computer;
+    }
+
+    public void setComputer(Player computer) {
+        this.computer = computer;
     }
 
     public Table getTable() {
