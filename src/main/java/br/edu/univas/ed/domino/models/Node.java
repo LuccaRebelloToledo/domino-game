@@ -6,6 +6,10 @@ public class Node {
     private Piece piece;
     private Node next;
 
+    public Node(Piece piece) {
+        this.setPiece(piece);
+    }
+
     public Node getPrevious() {
         return this.previous;
     }
