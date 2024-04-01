@@ -1,14 +1,19 @@
 package br.edu.univas.ed.domino.models;
 
 public class Game {
-    private Player[] players;
+    private List players;
     private Table table;
 
-    public Player[] getPlayers() {
+    public Game(List players, Table table) {
+        this.players = players;
+        this.table = table;
+    }
+
+    public List getPlayers() {
         return this.players;
     }
 
-    public void setPlayers(Player[] players) {
+    public void setPlayers(List players) {
         this.players = players;
     }
 
