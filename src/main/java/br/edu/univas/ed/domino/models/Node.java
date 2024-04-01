@@ -1,7 +1,6 @@
 package br.edu.univas.ed.domino.models;
 
 public class Node {
-
     private Node previous;
     private Piece piece;
     private Node next;

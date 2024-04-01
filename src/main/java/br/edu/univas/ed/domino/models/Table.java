@@ -5,6 +5,12 @@ public class Table {
     private List right;
     private List stock;
 
+    public Table(List left, List right, List stock) {
+        this.setLeft(left);
+        this.setRight(right);
+        this.setStock(stock);
+    }
+
     public List getLeft() {
         return this.left;
     }

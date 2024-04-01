@@ -6,6 +6,11 @@ public class Player {
     private PlayerType type;
     private List hand;
 
+    public Player(PlayerType type, List hand) {
+        this.setType(type);
+        this.setHand(hand);
+    }
+
     public PlayerType getType() {
         return this.type;
     }
