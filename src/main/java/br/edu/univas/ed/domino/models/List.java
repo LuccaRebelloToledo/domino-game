@@ -1,5 +1,7 @@
 package br.edu.univas.ed.domino.models;
 
+import java.util.Random;
+
 public class List {
     private Node first;
     private Node last;
@@ -26,7 +28,7 @@ public class List {
         return this.getFirst() == null;
     }
 
-    public boolean isIndexOutOfBounds(Integer index) {
+    private boolean isIndexOutOfBounds(Integer index) {
         return this.isEmpty() || index < 0 || index >= this.getSize();
     }
 
@@ -57,6 +59,29 @@ public class List {
         return current.getPiece();
     }
 
+    // Fisher-Yates shuffle algorithm
+    public void shuffle() {
+        if (this.isEmpty()) return;
+
+        int size = this.getSize() - 1;
+        Random random = new Random();
+
+        for (int i = size; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+
+            Piece tempI = this.getPiece(i);
+            Piece tempJ = this.getPiece(j);
+
+            Piece aux = new Piece(tempI.getLeft(), tempI.getRight());
+
+            tempI.setLeft(tempJ.getLeft());
+            tempI.setRight(tempJ.getRight());
+
+            tempJ.setLeft(aux.getLeft());
+            tempJ.setRight(aux.getRight());
+        }
+    }
+
     public void add(Piece piece) {
         Node node = new Node(piece);
 
@@ -70,8 +95,8 @@ public class List {
         this.setLast(node);
     }
 
-    public boolean remove(Integer index) {
-        if (this.isIndexOutOfBounds(index)) return false;
+    public void remove(Integer index) {
+        if (this.isIndexOutOfBounds(index)) return;
 
         Node current = this.getFirst();
         Integer size = this.getSize();
@@ -89,8 +114,6 @@ public class List {
         } else {
             removeNode(current);
         }
-
-        return true;
     }
 
     private void removeNode(Node node) {
@@ -113,7 +136,7 @@ public class List {
     }
 
     public void print() {
-        if(this.isEmpty()) return;
+        if (this.isEmpty()) return;
 
         Node current = this.getFirst();
         StringBuilder stringBuilder = new StringBuilder();
@@ -125,7 +148,7 @@ public class List {
         }
 
         // Remove the last " - " from the string
-        if (stringBuilder.length() > 0) {
+        if (!stringBuilder.isEmpty()) {
             stringBuilder.setLength(stringBuilder.length() - 3); // 3 is the length of " - "
         }
 

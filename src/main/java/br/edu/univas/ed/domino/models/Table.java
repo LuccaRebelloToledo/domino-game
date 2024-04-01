@@ -34,4 +34,12 @@ public class Table {
     public void setStock(List stock) {
         this.stock = stock;
     }
+
+    public void addPieceToLeft(Piece piece) {
+        this.getLeft().add(piece);
+    }
+
+    public void addPieceToRight(Piece piece) {
+        this.getRight().add(piece);
+    }
 }

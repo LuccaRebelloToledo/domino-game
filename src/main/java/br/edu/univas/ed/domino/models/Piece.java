@@ -29,4 +29,10 @@ public class Piece {
     public void setRight(Integer right) {
         this.right = right;
     }
+
+    public void flip() {
+        Integer temp = this.getLeft();
+        this.setLeft(this.getRight());
+        this.setRight(temp);
+    }
 }

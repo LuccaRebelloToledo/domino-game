@@ -1,14 +1,19 @@
 package br.edu.univas.ed.domino.models;
 
+import br.edu.univas.ed.domino.dtos.BiggestPieceDto;
+import br.edu.univas.ed.domino.views.Output;
+
 public class Game {
     private Player human;
     private Player computer;
     private Table table;
+    private Output output;
 
-    public Game(Player human, Player computer, Table table) {
+    public Game(Player human, Player computer, Table table, Output output) {
         this.setHuman(human);
         this.setComputer(computer);
         this.setTable(table);
+        this.setOutput(output);
     }
 
     public Player getHuman() {
@@ -33,5 +38,164 @@ public class Game {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    public Output getOutput() {
+        return output;
+    }
+
+    public void setOutput(Output output) {
+        this.output = output;
+    }
+
+    public boolean isGameOver() {
+        // The game is over when one player has played all their pieces
+        return this.getHuman().getHand().isEmpty() || this.getComputer().getHand().isEmpty();
+    }
+
+    public Player initialize() {
+        // Generate all pieces
+        List allPieces = this.generatePieces();
+
+        // Distribute them between the players
+        // Human player
+        this.distributePieces(this.getHuman(), allPieces);
+
+        // Computer player
+        this.distributePieces(this.getComputer(), allPieces);
+
+        // Stock
+        this.populateGameStockWithRemainingPieces(allPieces);
+
+        // Biggest Piece
+        BiggestPieceDto biggestHumanDto = this.getHuman().biggestPiece();
+        BiggestPieceDto biggestComputerDto = this.getComputer().biggestPiece();
+
+        if (biggestHumanDto == null || biggestComputerDto == null) {
+            this.initialize();
+            return null;
+        } else {
+            return getCurrentPlayer(biggestHumanDto, biggestComputerDto);
+        }
+    }
+
+    private List generatePieces() {
+        // Create all domino pieces
+        List allPieces = new List();
+
+        for (int i = 0; i <= 6; i++) {
+            for (int j = i; j <= 6; j++) {
+                Piece piece = new Piece(i, j);
+                allPieces.add(piece);
+            }
+        }
+
+        // Shuffle the pieces
+        allPieces.shuffle();
+
+        return allPieces;
+    }
+
+    private void distributePieces(Player player, List allPieces) {
+        for (int i = 0; i < 7; i++) {
+            int randomIndex = (int) (Math.random() * allPieces.getSize());
+            player.getHand().add(allPieces.getPiece(randomIndex));
+            allPieces.remove(randomIndex);
+        }
+    }
+
+    private void populateGameStockWithRemainingPieces(List allPieces) {
+        int remainingPiecesSize = allPieces.getSize() - 1;
+
+        for (int i = remainingPiecesSize; i >= 0; i--) {
+            this.getTable().getStock().add(allPieces.getPiece(i));
+            allPieces.remove(i);
+        }
+    }
+
+    private Player compareBiggestPlayerPieces(Piece pieceHuman, Piece pieceComputer) {
+        if (pieceHuman.getLeft() > pieceComputer.getLeft()) {
+            return this.getHuman();
+        }
+
+        return this.getComputer();
+    }
+
+    private Player getCurrentPlayer(BiggestPieceDto biggestHumanDto, BiggestPieceDto biggestComputerDto) {
+        Player currentPlayer = this.compareBiggestPlayerPieces(biggestHumanDto.piece(), biggestComputerDto.piece());
+
+        if (currentPlayer == this.getHuman()) {
+            this.getHuman().getHand().remove(biggestHumanDto.position());
+
+            this.placeInitialPiece(biggestHumanDto.piece());
+
+            this.getOutput().humanStartedTheGame();
+
+            currentPlayer = this.getComputer();
+        } else {
+            this.getComputer().getHand().remove(biggestComputerDto.position());
+
+            this.placeInitialPiece(biggestComputerDto.piece());
+
+            this.getOutput().computerStartedTheGame();
+
+            currentPlayer = this.getHuman();
+        }
+
+        return currentPlayer;
+    }
+
+    private void placeInitialPiece(Piece piece) {
+        this.getTable().addPieceToLeft(piece);
+        this.getTable().addPieceToRight(piece);
+    }
+
+    public boolean playPiece(Player player, int position, String side) {
+        System.out.println(position);
+
+        Piece piece = player.getHand().getPiece(position);
+
+        switch (side) {
+            case "L":
+                Piece lastLeftPiece = this.getTable().getLeft().getLast().getPiece();
+
+                if (piece.getRight().equals(lastLeftPiece.getRight()) || piece.getLeft().equals(lastLeftPiece.getRight())) {
+                    if (piece.getRight().equals(lastLeftPiece.getRight())) {
+                        piece.flip();
+                    }
+
+                    this.getTable().addPieceToLeft(player.getHand().getPiece(position));
+                    player.getHand().remove(position);
+
+                    return true;
+                } else {
+                    return false;
+                }
+            case "R":
+                Piece lastRightPiece = this.getTable().getRight().getLast().getPiece();
+
+                if (piece.getRight().equals(lastRightPiece.getRight()) || piece.getLeft().equals(lastRightPiece.getRight())) {
+                    if (piece.getRight().equals(lastRightPiece.getRight())) {
+                        piece.flip();
+                    }
+
+                    this.getTable().addPieceToRight(player.getHand().getPiece(position));
+                    player.getHand().remove(position);
+
+                    return true;
+                } else {
+                    return false;
+                }
+        }
+
+        return false;
+    }
+
+    public void buyPiece(Player player) {
+        List stock = this.getTable().getStock();
+
+        int randomIndex = (int) (Math.random() * stock.getSize());
+        player.getHand().add(stock.getPiece(randomIndex));
+        stock.remove(randomIndex);
     }
 }
