@@ -108,7 +108,7 @@ public record Menu(Input input, Output output) {
                 continue;
             }
 
-            String side = getSide();
+            String side = getSide(game);
 
             if (side == null) {
                 continue;
@@ -143,11 +143,11 @@ public record Menu(Input input, Output output) {
         }
     }
 
-    private String getSide() {
+    private String getSide(Game game) {
         this.output().chooseSide();
         String side = this.input().readString();
 
-        if (!side.equalsIgnoreCase("L") && !side.equalsIgnoreCase("R")) {
+        if (!side.equalsIgnoreCase(game.LEFT) && !side.equalsIgnoreCase(game.RIGHT)) {
             this.output().invalidOption();
             return null;
         }

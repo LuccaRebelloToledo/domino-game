@@ -8,6 +8,8 @@ public class Game {
     private Player computer;
     private Table table;
     private Output output;
+    public final String LEFT = "L";
+    public final String RIGHT = "R";
 
     public Game(Player human, Player computer, Table table, Output output) {
         this.setHuman(human);
@@ -151,41 +153,28 @@ public class Game {
     }
 
     public boolean playPiece(Player player, int position, String side) {
-        System.out.println(position);
-
         Piece piece = player.getHand().getPiece(position);
+        Piece lastPiece = null;
 
-        switch (side) {
-            case "L":
-                Piece lastLeftPiece = this.getTable().getLeft().getLast().getPiece();
+        if (LEFT.equalsIgnoreCase(side)) {
+            lastPiece = this.getTable().getLeft().getLast().getPiece();
+        } else if (RIGHT.equalsIgnoreCase(side)) {
+            lastPiece = this.getTable().getRight().getLast().getPiece();
+        }
 
-                if (piece.getRight().equals(lastLeftPiece.getRight()) || piece.getLeft().equals(lastLeftPiece.getRight())) {
-                    if (piece.getRight().equals(lastLeftPiece.getRight())) {
-                        piece.flip();
-                    }
+        if (lastPiece != null && (piece.getRight().equals(lastPiece.getRight()) || piece.getLeft().equals(lastPiece.getRight()))) {
+            if (piece.getRight().equals(lastPiece.getRight())) {
+                piece.flip();
+            }
 
-                    this.getTable().addPieceToLeft(player.getHand().getPiece(position));
-                    player.getHand().remove(position);
+            if (LEFT.equalsIgnoreCase(side)) {
+                this.getTable().addPieceToLeft(piece);
+            } else {
+                this.getTable().addPieceToRight(piece);
+            }
 
-                    return true;
-                } else {
-                    return false;
-                }
-            case "R":
-                Piece lastRightPiece = this.getTable().getRight().getLast().getPiece();
-
-                if (piece.getRight().equals(lastRightPiece.getRight()) || piece.getLeft().equals(lastRightPiece.getRight())) {
-                    if (piece.getRight().equals(lastRightPiece.getRight())) {
-                        piece.flip();
-                    }
-
-                    this.getTable().addPieceToRight(player.getHand().getPiece(position));
-                    player.getHand().remove(position);
-
-                    return true;
-                } else {
-                    return false;
-                }
+            player.getHand().remove(position);
+            return true;
         }
 
         return false;
