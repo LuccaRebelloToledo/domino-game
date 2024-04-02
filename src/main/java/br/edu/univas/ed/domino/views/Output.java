@@ -78,6 +78,10 @@ public class Output {
         this.println("");
     }
 
+    public void showComputerBought() {
+        this.println("The computer bought a piece!");
+    }
+
     public void showTable(Table table) {
         this.println("Table");
 
@@ -130,7 +134,7 @@ public class Output {
         this.println("");
     }
 
-    public void showTheWinner (Game game) {
+    public void showTheWinner(Game game) {
         this.println(game.getWinner() + " win the game!");
         this.println("");
     }

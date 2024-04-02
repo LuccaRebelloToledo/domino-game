@@ -1,7 +1,11 @@
 package br.edu.univas.ed.domino.views;
 
 import br.edu.univas.ed.domino.dtos.GameDto;
-import br.edu.univas.ed.domino.models.*;
+
+import br.edu.univas.ed.domino.models.Game;
+import br.edu.univas.ed.domino.models.List;
+import br.edu.univas.ed.domino.models.Player;
+import br.edu.univas.ed.domino.models.Table;
 
 public record Menu(Input input, Output output) {
 
@@ -144,7 +148,7 @@ public record Menu(Input input, Output output) {
                 continue;
             }
 
-            String side = getSide(game);
+            String side = getSide();
 
             if (side == null) {
                 continue;
@@ -181,11 +185,11 @@ public record Menu(Input input, Output output) {
         }
     }
 
-    private String getSide(Game game) {
+    private String getSide() {
         this.output().showChooseSide();
         String side = this.input().readString();
 
-        if (!side.equalsIgnoreCase(game.LEFT) && !side.equalsIgnoreCase(game.RIGHT)) {
+        if (!side.equalsIgnoreCase(Game.LEFT) && !side.equalsIgnoreCase(Game.RIGHT)) {
             this.output().showInvalidOption();
             return null;
         }
@@ -205,7 +209,7 @@ public record Menu(Input input, Output output) {
                 boolean computerHasAnyValidMove = game.hasValidMove(currentPlayer);
 
                 if (computerHasAnyValidMove) {
-                    // LOGIC FOR COMPUTER TO PLAY
+                    // Computer Complex Strategy
 
                     this.output().showComputerPlayed();
                     looping = false;
@@ -214,6 +218,7 @@ public record Menu(Input input, Output output) {
 
                     if (computerCanBuyPiece) {
                         game.buyPiece(currentPlayer);
+                        this.output().showComputerBought();
                     } else {
                         this.output().showComputerSkipped();
                         looping = false;
