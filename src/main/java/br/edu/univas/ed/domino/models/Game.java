@@ -131,7 +131,7 @@ public class Game {
 
             this.placeInitialPiece(biggestHumanDto.piece());
 
-            this.getOutput().humanStartedTheGame();
+            this.getOutput().showHumanStartedTheGame();
 
             currentPlayer = this.getComputer();
         } else {
@@ -139,7 +139,7 @@ public class Game {
 
             this.placeInitialPiece(biggestComputerDto.piece());
 
-            this.getOutput().computerStartedTheGame();
+            this.getOutput().showComputerStartedTheGame();
 
             currentPlayer = this.getHuman();
         }
@@ -180,11 +180,64 @@ public class Game {
         return false;
     }
 
+    public boolean hasValidMove(Player player) {
+        Piece lastPieceLeft = this.getTable().getLeft().getLast().getPiece();
+        Piece lastPieceRight = this.getTable().getRight().getLast().getPiece();
+
+        for (int i = 0; i < player.getHand().getSize(); i++) {
+            Piece piece = player.getHand().getPiece(i);
+
+            boolean isPiecePlayable = this.canPieceBePlayed(piece, lastPieceLeft, lastPieceRight);
+
+            if (isPiecePlayable) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    private boolean canPieceBePlayed(Piece currentPiece, Piece lastPieceOnLeft, Piece lastPieceOnRight) {
+        boolean matchesRightEndOfLeftPiece = currentPiece.getLeft().equals(lastPieceOnLeft.getRight()) || currentPiece.getRight().equals(lastPieceOnLeft.getRight());
+
+        boolean matchesRightEndOfRightPiece = currentPiece.getLeft().equals(lastPieceOnRight.getRight()) || currentPiece.getRight().equals(lastPieceOnRight.getRight());
+
+        return matchesRightEndOfLeftPiece || matchesRightEndOfRightPiece;
+    }
+
+    public boolean stockIsEmpty() {
+        return this.getTable().getStock().isEmpty();
+    }
+
+    public boolean canPlayerBuyAPiece(Player player) {
+        return !this.stockIsEmpty() && !this.hasValidMove(player);
+    }
+
     public void buyPiece(Player player) {
+        if(this.stockIsEmpty()) {
+            return;
+        }
+
         List stock = this.getTable().getStock();
 
         int randomIndex = (int) (Math.random() * stock.getSize());
         player.getHand().add(stock.getPiece(randomIndex));
         stock.remove(randomIndex);
+    }
+
+    public boolean canPlayerSkipTurn(Player player) {
+        boolean hasValidMove = this.hasValidMove(player);
+        boolean stockIsEmpty = this.stockIsEmpty();
+
+        return !hasValidMove && stockIsEmpty;
+    }
+
+    public String getWinner() {
+        if (this.getHuman().getHand().isEmpty()) {
+            return "You";
+        } else {
+            return "Computer";
+        }
     }
 }

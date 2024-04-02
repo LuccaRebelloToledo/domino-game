@@ -1,10 +1,7 @@
 package br.edu.univas.ed.domino.views;
 
 import br.edu.univas.ed.domino.dtos.GameDto;
-import br.edu.univas.ed.domino.models.Game;
-import br.edu.univas.ed.domino.models.List;
-import br.edu.univas.ed.domino.models.Player;
-import br.edu.univas.ed.domino.models.Table;
+import br.edu.univas.ed.domino.models.*;
 
 public record Menu(Input input, Output output) {
 
@@ -18,7 +15,7 @@ public record Menu(Input input, Output output) {
 
             switch (option) {
                 case "1":
-                    this.output().startingGame();
+                    this.output().showStartingGame();
 
                     GameDto gameDto = this.startGame();
 
@@ -29,11 +26,11 @@ public record Menu(Input input, Output output) {
 
                     break;
                 case "2":
-                    this.output().bye();
+                    this.output().showBye();
                     looping = false;
                     break;
                 default:
-                    this.output().invalidOption();
+                    this.output().showInvalidOption();
                     break;
             }
 
@@ -66,39 +63,78 @@ public record Menu(Input input, Output output) {
 
     private void match(Game game, Player currentPlayer) {
         do {
-            this.output().printTable(game.getTable());
+            this.output().showTable(game.getTable());
 
             if (currentPlayer == game.getHuman()) {
                 this.output().showHumanTurn();
 
                 this.output().showPlayerHand(currentPlayer);
-                this.output().optionsHumanPlayer();
-                String option = this.input().readString();
 
-                switch (option) {
-                    case "1":
-                        this.humanChoosePiece(game, currentPlayer);
-                        break;
-                    case "2":
-                        break;
-                    case "3":
-                        break;
-                    default:
-                        this.output().invalidOption();
-                        break;
-                }
+                boolean looping = true;
+
+                do {
+                    this.output().showOptionsHumanPlayer();
+                    String option = this.input().readString();
+
+                    switch (option) {
+                        case "1":
+                            boolean humanPlayed = this.humanChoosePiece(game, currentPlayer);
+
+                            if (humanPlayed) {
+                                looping = false;
+                            }
+
+                            break;
+                        case "2":
+                            boolean isPlayerToBuyPiece = game.canPlayerBuyAPiece(currentPlayer);
+
+                            if (isPlayerToBuyPiece) {
+                                game.buyPiece(currentPlayer);
+
+                                this.output().showTable(game.getTable());
+
+                                this.output().showPlayerHand(currentPlayer);
+                            } else {
+                                this.output().showPlayerCannotBuyPiece();
+                            }
+
+                            break;
+                        case "3":
+                            boolean isPlayerEligibleToSkipTurn = game.canPlayerSkipTurn(currentPlayer);
+
+                            if (isPlayerEligibleToSkipTurn) {
+                                looping = false;
+                            } else {
+                                this.output().showPlayerCanPlay();
+                            }
+
+                            break;
+                        default:
+                            this.output().showInvalidOption();
+                            break;
+                    }
+                } while (looping);
 
             } else {
                 this.output().showComputerTurn();
 
-                this.computerPlay();
+                this.computerPlay(game, currentPlayer);
             }
 
             currentPlayer = currentPlayer == game.getHuman() ? game.getComputer() : game.getHuman();
         } while (!game.isGameOver());
+
+        this.output().showTheWinner(game);
     }
 
-    private void humanChoosePiece(Game game, Player human) {
+    private boolean humanChoosePiece(Game game, Player human) {
+        boolean hasValidMove = game.hasValidMove(human);
+
+        if (!hasValidMove) {
+            this.output().showNoValidMoves();
+            return false;
+        }
+
         boolean looping = true;
 
         do {
@@ -116,50 +152,74 @@ public record Menu(Input input, Output output) {
 
             boolean isValid = game.playPiece(human, position, side);
 
-            if(!isValid) {
-                this.output().invalidOption();
+            if (!isValid) {
+                this.output().showNoValidPiece();
                 continue;
             }
 
             looping = false;
 
-        } while(looping);
+        } while (looping);
+
+        return true;
     }
 
     private int getPosition(Player human) {
-        this.output().choosePiece();
+        this.output().showChoosePiece();
         String positionStr = this.input().readString();
 
         try {
             int position = Integer.parseInt(positionStr) - 1;
             if (position < 0 || position >= human.getHand().getSize()) {
-                this.output().invalidOption();
+                this.output().showInvalidOption();
                 return -1;
             }
             return position;
         } catch (NumberFormatException e) {
-            this.output().invalidOption();
+            this.output().showInvalidOption();
             return -1;
         }
     }
 
     private String getSide(Game game) {
-        this.output().chooseSide();
+        this.output().showChooseSide();
         String side = this.input().readString();
 
         if (!side.equalsIgnoreCase(game.LEFT) && !side.equalsIgnoreCase(game.RIGHT)) {
-            this.output().invalidOption();
+            this.output().showInvalidOption();
             return null;
         }
+
         return side;
     }
 
-    private void computerPlay() {
-        this.output().computerThinking();
+    private void computerPlay(Game game, Player currentPlayer) {
+        this.output().showComputerThinking();
 
         try {
-            Thread.sleep(3000);
-            this.output().computerPlayed();
+            Thread.sleep(2000);
+
+            boolean looping = true;
+
+            do {
+                boolean computerHasAnyValidMove = game.hasValidMove(currentPlayer);
+
+                if (computerHasAnyValidMove) {
+                    // LOGIC FOR COMPUTER TO PLAY
+
+                    this.output().showComputerPlayed();
+                    looping = false;
+                } else {
+                    boolean computerCanBuyPiece = game.canPlayerBuyAPiece(currentPlayer);
+
+                    if (computerCanBuyPiece) {
+                        game.buyPiece(currentPlayer);
+                    } else {
+                        this.output().showComputerSkipped();
+                        looping = false;
+                    }
+                }
+            } while (looping);
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         }

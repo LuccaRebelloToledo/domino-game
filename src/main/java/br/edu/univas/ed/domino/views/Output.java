@@ -1,5 +1,6 @@
 package br.edu.univas.ed.domino.views;
 
+import br.edu.univas.ed.domino.models.Game;
 import br.edu.univas.ed.domino.models.Player;
 import br.edu.univas.ed.domino.models.Table;
 
@@ -23,47 +24,61 @@ public class Output {
     public void showMenuOptions() {
         this.println("1. Start a new game!");
         this.println("2. Exit!");
-        this.chooseOption();
+        this.showChooseOption();
     }
 
-    public void chooseOption() {
+    public void showChooseOption() {
         this.print("Choose an option: ");
     }
 
-    public void bye() {
+    public void showBye() {
         this.println("Goodbye! :)");
     }
 
-    public void invalidOption() {
+    public void showInvalidOption() {
         this.println("Invalid option. Please, try again.");
         this.println("");
     }
 
-    public void startingGame() {
+    public void showNoValidPiece() {
+        this.println("You played an invalid piece. Please try again.");
+    }
+
+    public void showNoValidMoves() {
+        this.println("There are no valid moves. Please Buy or Pass.");
+        this.println("");
+    }
+
+    public void showStartingGame() {
         this.println("Starting a new game...");
         this.println("");
     }
 
-    public void humanStartedTheGame() {
+    public void showHumanStartedTheGame() {
         this.println("You started the game!");
         this.println("");
     }
 
-    public void computerStartedTheGame() {
+    public void showComputerStartedTheGame() {
         this.println("The computer started the game!");
         this.println("");
     }
 
-    public void computerThinking() {
+    public void showComputerThinking() {
         this.println("The computer is thinking...");
     }
 
-    public void computerPlayed() {
+    public void showComputerPlayed() {
         this.println("The computer played!");
         this.println("");
     }
 
-    public void printTable(Table table) {
+    public void showComputerSkipped() {
+        this.println("The computer skipped the turn!");
+        this.println("");
+    }
+
+    public void showTable(Table table) {
         this.println("Table");
 
         this.print("Left: ");
@@ -90,18 +105,33 @@ public class Output {
         player.printHand();
     }
 
-    public void optionsHumanPlayer() {
+    public void showOptionsHumanPlayer() {
         this.println("1. Play a piece");
         this.println("2. Buy a piece");
         this.println("3. Pass");
-        this.chooseOption();
+        this.showChooseOption();
     }
 
-    public void choosePiece() {
+    public void showChoosePiece() {
         this.print("Choose a piece (your number of the position): ");
     }
 
-    public void chooseSide() {
+    public void showChooseSide() {
         this.print("Choose a side (L or R): ");
+    }
+
+    public void showPlayerCanPlay() {
+        this.println("You cannot skip your turn. There are still pieces in the stock or you can play a piece.");
+        this.println("");
+    }
+
+    public void showPlayerCannotBuyPiece() {
+        this.println("You cannot buy a piece. There are no pieces in the stock or you can play a piece.");
+        this.println("");
+    }
+
+    public void showTheWinner (Game game) {
+        this.println(game.getWinner() + " win the game!");
+        this.println("");
     }
 }
