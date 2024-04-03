@@ -16,6 +16,11 @@ public class Output {
         System.out.println(message);
     }
 
+    public void showException(String message) {
+        this.println("An error occurred: " + message);
+        this.println("");
+    }
+
     public void showWelcomeMessage() {
         this.println("Welcome to Domino Game!");
         this.println("");

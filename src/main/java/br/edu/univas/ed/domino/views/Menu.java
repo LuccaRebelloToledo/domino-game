@@ -201,15 +201,13 @@ public record Menu(Input input, Output output) {
         this.output().showComputerThinking();
 
         try {
-            Thread.sleep(2000);
-
             boolean looping = true;
 
             do {
                 boolean computerHasAnyValidMove = game.hasValidMove(currentPlayer);
 
                 if (computerHasAnyValidMove) {
-                    // Computer Complex Strategy
+                    // Computer Strategy
 
                     this.output().showComputerPlayed();
                     looping = false;
@@ -225,8 +223,10 @@ public record Menu(Input input, Output output) {
                     }
                 }
             } while (looping);
+
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
+            this.output().showException(e.getMessage());
         }
     }
 }
