@@ -51,7 +51,6 @@ public class Game {
     }
 
     public boolean isGameOver() {
-        // The game is over when one player has played all their pieces
         return this.getHuman().getHand().isEmpty() || this.getComputer().getHand().isEmpty();
     }
 

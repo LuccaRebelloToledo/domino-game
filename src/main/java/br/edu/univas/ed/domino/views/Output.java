@@ -27,7 +27,8 @@ public class Output {
 
     public void showMenuOptions() {
         this.println("1. Começar um novo jogo!");
-        this.println("2. Sair!");
+        this.println("2. Regras!");
+        this.println("3. Sair!");
         this.showChooseOption();
     }
 
@@ -37,6 +38,21 @@ public class Output {
 
     public void showBye() {
         this.println("Até mais! :)");
+    }
+
+    public void showRules(){
+        this.println("");
+        this.println("Regras do jogo de Dominó:");
+        this.println("1. O jogo de Dominó é jogado por dois jogadores, você e o computador.");
+        this.println("2. O jogo começa com 7 peças para cada jogador.");
+        this.println("3. O jogador que possuir a maior peça dupla, ou seja, peças com lados iguais, começa o jogo.");
+        this.println("4. Cada jogador deve tentar encaixar uma de suas peças em uma das extremidades da mesa, desde que o número nas extremidades corresponda ao de sua peça.");
+        this.println("5. Caso não possua uma peça válida, o jogador deve comprar uma peça do monte ou passar a vez. O jogador só pode passar a vez se não possuir peças válidas e não houver peças no monte.");
+        this.println("6. O jogo termina quando um dos jogadores encaixar todas as suas peças ou quando nenhum dos jogadores possuir jogadas válidas.");
+        this.println("7. O vencedor é o jogador que encaixar todas as suas peças ou que possuir a menor quantidade de pontos nas peças restantes.");
+        this.println("");
+        this.println("Tenha um ótimo jogo, esperamos que você se divirta! :)");
+        this.println("");
     }
 
     public void showInvalidOption() {

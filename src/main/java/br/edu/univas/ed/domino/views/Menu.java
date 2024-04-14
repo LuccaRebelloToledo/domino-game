@@ -30,6 +30,9 @@ public record Menu(Input input, Output output) {
 
                     break;
                 case "2":
+                    this.output().showRules();
+                    break;
+                case "3":
                     this.output().showBye();
                     looping = false;
                     break;
