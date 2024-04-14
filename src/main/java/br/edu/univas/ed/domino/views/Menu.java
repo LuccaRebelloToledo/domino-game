@@ -126,7 +126,7 @@ public record Menu(Input input, Output output) {
             }
 
             currentPlayer = currentPlayer == game.getHuman() ? game.getComputer() : game.getHuman();
-        } while (!game.isGameOver() || game.neitherPlayerHasValidMove());
+        } while (!game.isGameOver() && !game.neitherPlayerHasValidMove());
 
         this.output().showTable(game.getTable());
 

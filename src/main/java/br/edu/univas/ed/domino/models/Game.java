@@ -209,7 +209,7 @@ public class Game {
     }
 
     public boolean neitherPlayerHasValidMove() {
-        return !this.hasValidMove(this.getHuman()) && !this.hasValidMove(this.getComputer());
+        return this.stockIsEmpty() && !this.hasValidMove(this.getHuman()) && !this.hasValidMove(this.getComputer());
     }
 
     private boolean canPieceBePlayed(Piece currentPiece, Piece lastPieceOnLeft, Piece lastPieceOnRight) {
