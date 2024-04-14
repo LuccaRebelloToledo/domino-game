@@ -21,7 +21,7 @@ git clone https://github.com/LuccaRebelloToledo/domino-game.git
 ![image](https://github.com/LuccaRebelloToledo/domino-game/assets/99377036/630904ba-f7b6-470a-be93-3f6a2b965a3c)
 
 ## Experiência de Jogo
-- Esperamos que vocês se divirtam e tenha um ótimo jogo de dominó!
+- Esperamos que se divirtam e tenham um ótimo jogo de dominó!
 
 ## Ferramentas utilizadas
 - Java 17
