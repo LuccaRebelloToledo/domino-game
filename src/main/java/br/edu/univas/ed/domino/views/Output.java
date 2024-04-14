@@ -17,96 +17,96 @@ public class Output {
     }
 
     public void showException(String message) {
-        this.println("An error occurred: " + message);
+        this.println("Ocorreu um erro: " + message);
         this.println("");
     }
 
     public void showWelcomeMessage() {
-        this.println("Welcome to Domino Game!");
+        this.println("Bem vindo ao jogo de Dominó!");
         this.println("");
     }
 
     public void showMenuOptions() {
-        this.println("1. Start a new game!");
-        this.println("2. Exit!");
+        this.println("1. Começar um novo jogo!");
+        this.println("2. Sair!");
         this.showChooseOption();
     }
 
     public void showChooseOption() {
-        this.print("Choose an option: ");
+        this.print("Escolha uma opção: ");
     }
 
     public void showBye() {
-        this.println("Goodbye! :)");
+        this.println("Até mais! :)");
     }
 
     public void showInvalidOption() {
-        this.println("Invalid option. Please, try again.");
+        this.println("Opção inválida. Por favor, tente novamente.");
         this.println("");
     }
 
     public void showNoValidPiece() {
-        this.println("You played an invalid piece. Please try again.");
+        this.println("Você jogou uma peça inválida. Por favor, tente novamente.");
     }
 
     public void showNoValidMoves() {
-        this.println("There are no valid moves. Please Buy or Pass.");
+        this.println("Você não possuí jogadas válidas. Por favor, compre ou passe a vez.");
         this.println("");
     }
 
     public void showStartingGame() {
-        this.println("Starting a new game...");
+        this.println("Começando um novo jogo...");
         this.println("");
     }
 
     public void showHumanStartedTheGame() {
-        this.println("You started the game!");
+        this.println("Você jogou a primeira peça!");
         this.println("");
     }
 
     public void showComputerStartedTheGame() {
-        this.println("The computer started the game!");
+        this.println("Seu oponente jogou a primeira peça!");
         this.println("");
     }
 
     public void showComputerThinking() {
-        this.println("The computer is thinking...");
+        this.println("Seu oponente está pensando...");
     }
 
     public void showComputerPlayed() {
-        this.println("The computer played!");
+        this.println("Seu oponente realizou uma jogada!");
         this.println("");
     }
 
     public void showComputerSkipped() {
-        this.println("The computer skipped the turn!");
+        this.println("Seu oponente passou a vez!");
         this.println("");
     }
 
     public void showComputerBought() {
-        this.println("The computer bought a piece!");
+        this.println("Seu oponente comprou uma peça!");
     }
 
     public void showTable(Table table) {
-        this.println("Table");
+        this.println("Mesa");
 
-        this.print("Left: ");
+        this.print("Esquerda: ");
         table.getLeft().print();
 
-        this.print("Right: ");
+        this.print("Direita: ");
         table.getRight().print();
 
         this.println("");
     }
 
     public void showHumanTurn() {
-        this.println("It's your turn!");
+        this.println("Sua vez de jogar!");
         this.println("");
-        this.println("Your hand: ");
+        this.println("Suas peças: ");
     }
 
     public void showComputerTurn() {
-        this.println("It's the computer's turn!");
+        this.println("É a vez do seu oponente jogar!");
         this.println("");
     }
 
@@ -115,32 +115,32 @@ public class Output {
     }
 
     public void showOptionsHumanPlayer() {
-        this.println("1. Play a piece");
-        this.println("2. Buy a piece");
-        this.println("3. Pass");
+        this.println("1. Realizar uma jogada!");
+        this.println("2. Comprar do monte!");
+        this.println("3. Passar a vez!");
         this.showChooseOption();
     }
 
     public void showChoosePiece() {
-        this.print("Choose a piece (your number of the position): ");
+        this.print("Escolha sua peça e digite o número de sua posição: ");
     }
 
     public void showChooseSide() {
-        this.print("Choose a side (L or R): ");
+        this.print("Escolha um lado para jogar (L para esquerda ou R para direita): ");
     }
 
     public void showPlayerCanPlay() {
-        this.println("You cannot skip your turn. There are still pieces in the stock or you can play a piece.");
+        this.println("Você não pode passar a vez. Ainda há peças no monte ou você pode realizar uma jogada!");
         this.println("");
     }
 
     public void showPlayerCannotBuyPiece() {
-        this.println("You cannot buy a piece. There are no pieces in the stock or you can play a piece.");
+        this.println("Você não pode comprar do monte. Não há mais peças no monte ou você pode realizar uma jogada!");
         this.println("");
     }
 
     public void showTheWinner(Game game) {
-        this.println(game.getWinner() + " win the game!");
+        this.println(game.getWinner() + " venceu o jogo de Dominó!");
         this.println("");
     }
 }
