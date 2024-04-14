@@ -1,6 +1,5 @@
 package br.edu.univas.ed.domino.views;
 
-import br.edu.univas.ed.domino.models.Game;
 import br.edu.univas.ed.domino.models.Player;
 import br.edu.univas.ed.domino.models.Table;
 
