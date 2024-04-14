@@ -73,11 +73,11 @@ public class Game {
         BiggestPieceDto biggestHumanDto = this.getHuman().biggestPiece();
         BiggestPieceDto biggestComputerDto = this.getComputer().biggestPiece();
 
-        if (biggestHumanDto == null || biggestComputerDto == null) {
+        if (biggestHumanDto == null && biggestComputerDto == null) {
             this.initialize();
             return null;
         } else {
-            return getCurrentPlayer(biggestHumanDto, biggestComputerDto);
+            return this.getStartingPlayer(biggestHumanDto, biggestComputerDto);
         }
     }
 
@@ -123,28 +123,38 @@ public class Game {
         return this.getComputer();
     }
 
-    private Player getCurrentPlayer(BiggestPieceDto biggestHumanDto, BiggestPieceDto biggestComputerDto) {
-        Player currentPlayer = this.compareBiggestPlayerPieces(biggestHumanDto.piece(), biggestComputerDto.piece());
+    private Player getStartingPlayer(BiggestPieceDto biggestHumanDto, BiggestPieceDto biggestComputerDto) {
+        Player startingPlayer = null;
 
-        if (currentPlayer == this.getHuman()) {
+        Player playerWithBiggestPiece;
+
+        if (biggestHumanDto == null) {
+            playerWithBiggestPiece = this.getComputer();
+        } else if (biggestComputerDto == null) {
+            playerWithBiggestPiece = this.getHuman();
+        } else {
+            playerWithBiggestPiece = this.compareBiggestPlayerPieces(biggestHumanDto.piece(), biggestComputerDto.piece());
+        }
+
+        if (playerWithBiggestPiece == this.getHuman() && biggestHumanDto != null) {
             this.getHuman().getHand().remove(biggestHumanDto.position());
 
             this.placeInitialPiece(biggestHumanDto.piece());
 
             this.getOutput().showHumanStartedTheGame();
 
-            currentPlayer = this.getComputer();
-        } else {
+            startingPlayer = this.getComputer();
+        } else if (playerWithBiggestPiece == this.getComputer() && biggestComputerDto != null) {
             this.getComputer().getHand().remove(biggestComputerDto.position());
 
             this.placeInitialPiece(biggestComputerDto.piece());
 
             this.getOutput().showComputerStartedTheGame();
 
-            currentPlayer = this.getHuman();
+            startingPlayer = this.getHuman();
         }
 
-        return currentPlayer;
+        return startingPlayer;
     }
 
     private void placeInitialPiece(Piece piece) {
@@ -215,7 +225,7 @@ public class Game {
     }
 
     public void buyPiece(Player player) {
-        if(this.stockIsEmpty()) {
+        if (this.stockIsEmpty()) {
             return;
         }
 
@@ -235,9 +245,9 @@ public class Game {
 
     public String getWinner() {
         if (this.getHuman().getHand().isEmpty()) {
-            return "You";
+            return "Você";
         } else {
-            return "Computer";
+            return "Seu oponente";
         }
     }
 }
