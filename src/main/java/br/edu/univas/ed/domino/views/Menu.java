@@ -126,9 +126,11 @@ public record Menu(Input input, Output output) {
             }
 
             currentPlayer = currentPlayer == game.getHuman() ? game.getComputer() : game.getHuman();
-        } while (!game.isGameOver());
+        } while (!game.isGameOver() || game.neitherPlayerHasValidMove());
 
-        this.output().showTheWinner(game);
+        this.output().showTable(game.getTable());
+
+        game.getWinner();
     }
 
     private boolean humanChoosePiece(Game game, Player human) {
@@ -201,32 +203,32 @@ public record Menu(Input input, Output output) {
         this.output().showComputerThinking();
 
         try {
-            boolean looping = true;
-
-            do {
-                boolean computerHasAnyValidMove = game.hasValidMove(currentPlayer);
-
-                if (computerHasAnyValidMove) {
-                    // Computer Strategy
-
-                    this.output().showComputerPlayed();
-                    looping = false;
-                } else {
-                    boolean computerCanBuyPiece = game.canPlayerBuyAPiece(currentPlayer);
-
-                    if (computerCanBuyPiece) {
-                        game.buyPiece(currentPlayer);
-                        this.output().showComputerBought();
-                    } else {
-                        this.output().showComputerSkipped();
-                        looping = false;
-                    }
-                }
-            } while (looping);
-
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             this.output().showException(e.getMessage());
         }
+
+        boolean looping = true;
+
+        do {
+            boolean computerHasAnyValidMove = game.hasValidMove(currentPlayer);
+
+            if (computerHasAnyValidMove) {
+                game.computerSelectAndPlayPiece(game, currentPlayer);
+
+                this.output().showComputerPlayed();
+                looping = false;
+            } else {
+                boolean computerCanBuyPiece = game.canPlayerBuyAPiece(currentPlayer);
+
+                if (computerCanBuyPiece) {
+                    game.buyPiece(currentPlayer);
+                    this.output().showComputerBought();
+                } else {
+                    this.output().showComputerSkipped();
+                    looping = false;
+                }
+            }
+        } while (looping);
     }
 }

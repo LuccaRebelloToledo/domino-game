@@ -208,6 +208,10 @@ public class Game {
         return false;
     }
 
+    public boolean neitherPlayerHasValidMove() {
+        return !this.hasValidMove(this.getHuman()) && !this.hasValidMove(this.getComputer());
+    }
+
     private boolean canPieceBePlayed(Piece currentPiece, Piece lastPieceOnLeft, Piece lastPieceOnRight) {
         boolean matchesRightEndOfLeftPiece = currentPiece.getLeft().equals(lastPieceOnLeft.getRight()) || currentPiece.getRight().equals(lastPieceOnLeft.getRight());
 
@@ -236,6 +240,27 @@ public class Game {
         stock.remove(randomIndex);
     }
 
+    public void computerSelectAndPlayPiece(Game game, Player computer) {
+        Piece lastPieceLeft = game.getTable().getLeft().getLast().getPiece();
+        Piece lastPieceRight = game.getTable().getRight().getLast().getPiece();
+
+        for (int i = 0; i < computer.getHand().getSize(); i++) {
+            Piece piece = computer.getHand().getPiece(i);
+
+            boolean isPiecePlayable = game.canPieceBePlayed(piece, lastPieceLeft, lastPieceRight);
+
+            if (isPiecePlayable) {
+                boolean playedPiece = game.playPiece(computer, i, Game.LEFT);
+
+                if (!playedPiece) {
+                    game.playPiece(computer, i, Game.RIGHT);
+                }
+
+                return;
+            }
+        }
+    }
+
     public boolean canPlayerSkipTurn(Player player) {
         boolean hasValidMove = this.hasValidMove(player);
         boolean stockIsEmpty = this.stockIsEmpty();
@@ -243,11 +268,39 @@ public class Game {
         return !hasValidMove && stockIsEmpty;
     }
 
-    public String getWinner() {
-        if (this.getHuman().getHand().isEmpty()) {
-            return "Você";
+    private int calculatePlayerScore(Player player) {
+        int score = 0;
+
+        for (int i = 0; i < player.getHand().getSize(); i++) {
+            Piece piece = player.getHand().getPiece(i);
+            score += piece.getLeft() + piece.getRight();
+        }
+
+        return score;
+    }
+
+    public void getWinner() {
+        if (neitherPlayerHasValidMove()) {
+            this.getOutput().showNeitherPlayerHasValidMove();
+
+            int humanScore = this.calculatePlayerScore(this.getHuman());
+            int computerScore = this.calculatePlayerScore(this.getComputer());
+
+            this.getOutput().showPlayersScore(humanScore, computerScore);
+
+            if (humanScore < computerScore) {
+                this.getOutput().showHumanWinner();
+            } else if (humanScore > computerScore) {
+                this.getOutput().showComputerWinner();
+            } else {
+                this.getOutput().showDrawMatch();
+            }
         } else {
-            return "Seu oponente";
+            if (this.getHuman().getHand().isEmpty()) {
+                this.getOutput().showHumanWinner();
+            } else {
+                this.getOutput().showComputerWinner();
+            }
         }
     }
 }

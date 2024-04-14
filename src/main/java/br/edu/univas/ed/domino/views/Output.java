@@ -139,8 +139,30 @@ public class Output {
         this.println("");
     }
 
-    public void showTheWinner(Game game) {
-        this.println(game.getWinner() + " venceu o jogo de Dominó!");
+    public void showNeitherPlayerHasValidMove() {
+        this.println("Nenhum dos jogadores possui jogadas válidas. Para determinar o vencedor será realizada a contagem dos valores das peças de cada jogador!");
+        this.println("");
+    }
+
+    public void showPlayersScore(int humanScore, int computerScore) {
+        this.println("Pontuação:");
+        this.println("Você: " + humanScore);
+        this.println("Seu oponente: " + computerScore);
+        this.println("");
+    }
+
+    public void showHumanWinner() {
+        this.println("Você venceu o jogo de Dominó!");
+        this.println("");
+    }
+
+    public void showComputerWinner() {
+        this.println("Seu oponente venceu o jogo de Dominó!");
+        this.println("");
+    }
+
+    public void showDrawMatch() {
+        this.println("Ocorreu um empate no jogo de Dominó!");
         this.println("");
     }
 }
