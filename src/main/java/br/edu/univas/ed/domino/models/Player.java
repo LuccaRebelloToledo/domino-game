@@ -1,12 +1,15 @@
 package br.edu.univas.ed.domino.models;
 
 import br.edu.univas.ed.domino.dtos.BiggestPieceDto;
+import br.edu.univas.ed.domino.views.Output;
 
 public class Player {
     private List hand;
+    private Output output;
 
     public Player(List hand) {
         this.setHand(hand);
+        this.setOutput(new Output());
     }
 
     public List getHand() {
@@ -17,6 +20,14 @@ public class Player {
         this.hand = hand;
     }
 
+    public Output getOutput() {
+        return this.output;
+    }
+
+    public void setOutput(Output output) {
+        this.output = output;
+    }
+
     public void printHand() {
         Node current = this.getHand().getFirst();
         int position = 0;
@@ -25,14 +36,14 @@ public class Player {
             Piece piece = current.getPiece();
 
             if (piece != null) {
-                System.out.println((position + 1) + " - " + piece);
+                this.getOutput().showPositionAndPiece(position + 1, piece.toString());
             }
 
             position++;
             current = current.getNext();
         }
 
-        System.out.println();
+        this.getOutput().showNewLine();
     }
 
     public BiggestPieceDto biggestPiece() {

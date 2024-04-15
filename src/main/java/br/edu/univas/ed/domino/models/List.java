@@ -1,12 +1,17 @@
 package br.edu.univas.ed.domino.models;
 
+import br.edu.univas.ed.domino.views.Output;
+
 import java.util.Random;
 
 public class List {
     private Node first;
     private Node last;
+    private Output output;
 
-    public List() {}
+    public List() {
+        this.setOutput(new Output());
+    }
 
     public Node getFirst() {
         return this.first;
@@ -22,6 +27,14 @@ public class List {
 
     public void setLast(Node last) {
         this.last = last;
+    }
+
+    public Output getOutput() {
+        return this.output;
+    }
+
+    public void setOutput(Output output) {
+        this.output = output;
     }
 
     public boolean isEmpty() {
@@ -152,6 +165,6 @@ public class List {
             stringBuilder.setLength(stringBuilder.length() - 3); // 3 is the length of " - "
         }
 
-        System.out.println(stringBuilder);
+        this.getOutput().showList(stringBuilder.toString());
     }
 }

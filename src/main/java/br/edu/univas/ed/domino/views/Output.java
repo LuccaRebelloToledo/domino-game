@@ -40,7 +40,7 @@ public class Output {
         this.println("Até mais! :)");
     }
 
-    public void showRules(){
+    public void showRules() {
         this.println("");
         this.println("Regras do jogo de Dominó:");
         this.println("1. O jogo de Dominó é jogado por dois jogadores, você e o computador.");
@@ -52,6 +52,18 @@ public class Output {
         this.println("7. O vencedor é o jogador que encaixar todas as suas peças ou que possuir a menor quantidade de pontos nas peças restantes.");
         this.println("");
         this.println("Tenha um ótimo jogo, esperamos que você se divirta! :)");
+        this.println("");
+    }
+
+    public void showList(String list) {
+        this.println(list);
+    }
+
+    public void showPositionAndPiece(int position, String piece) {
+        this.println(position + " - " + piece);
+    }
+
+    public void showNewLine() {
         this.println("");
     }
 
