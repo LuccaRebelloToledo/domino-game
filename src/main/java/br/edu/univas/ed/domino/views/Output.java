@@ -153,7 +153,7 @@ public class Output {
     }
 
     public void showChooseSide() {
-        this.print("Escolha um lado para jogar (L para esquerda ou R para direita): ");
+        this.print("Escolha um lado para jogar (E para esquerda ou D para direita): ");
     }
 
     public void showPlayerCanPlay() {

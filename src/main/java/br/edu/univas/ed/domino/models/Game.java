@@ -8,8 +8,8 @@ public class Game {
     private Player computer;
     private Table table;
     private Output output;
-    public static final String LEFT = "L";
-    public static final String RIGHT = "R";
+    public static final String LEFT = "E";
+    public static final String RIGHT = "D";
 
     public Game(Player human, Player computer, Table table, Output output) {
         this.setHuman(human);
